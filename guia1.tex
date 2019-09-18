@@ -1,0 +1,47 @@
+\documentclass[]{article}
+
+%opening
+\title{}
+\author{}
+
+\begin{document}
+
+\maketitle
+
+\begin{abstract}
+
+\end{abstract}
+
+\section{Ejercicio 2}
+
+\begin{flushleft}
+Sea $f_{1}(x,y) = x + y$\linebreak
+\\Vamos a aplicar recursicion primitiva. 
+\\Queremos que $h(x,y) = f_{1}(x,y) = x + y$
+\\Es claro que necesitamos $n=1$
+\\Luego $h(x,0) = x + 0 = x = id(x) \Rightarrow f(x) = id(x)$
+\\Y, $h(x,t+1) = x+(t+1) = (x+t)+1 = s(x+t) = s(h(x,t)) = g(h(x,t),x,t)$
+\\Entonces $g(x,y,z) = s(x)$
+\\Luego, $g$ la podemos obtener por composicion $g(x,y,z)=s(u^{3}_{1}(x,y,z))$, con $f = s$ y $g_{1} = u^{3}_{1}$
+
+\end{flushleft}
+
+\begin{flushleft}
+	Sea $f_{2}(x,y) = x * y$\linebreak
+	\\Vamos a aplicar recursicion primitiva. 
+	\\Queremos que $h(x,y) = f_{2}(x,y) = x * y$
+	\\Es claro que necesitamos $n=1$
+	\\Luego $h(x,0) = x * 0 = 0 = 0 \Rightarrow f(x) = 0$
+	\\Y, $h(x,t+1) = x*(t+1) = x*t + x = h(x,t) + x = f_{1}(h(x,t),x)$
+	\\Entonces 	$f_{1}(h(x,t),x) = g(h(x,t),x,t)$
+	\\Entonces $g(x,y,z) = f_{1}(x,y)$
+	\\Luego, $g$ la podemos obtener por composicion $g(x,y,z)=f_{1}(u^{3}_{1}(x,y,z),u^{3}_{2}(x,y,z))$, con $f = s$, $g_{1} = u^{3}_{1}$ y $g_{2} = u^{3}_{2}$
+	
+\end{flushleft}
+
+
+
+
+
+
+\end{document}
