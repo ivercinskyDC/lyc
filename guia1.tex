@@ -25,23 +25,64 @@ Sea $f_{1}(x,y) = x + y$\linebreak
 \\Luego, $g$ la podemos obtener por composicion $g(x,y,z)=s(u^{3}_{1}(x,y,z))$, con $f = s$ y $g_{1} = u^{3}_{1}$
 
 \end{flushleft}
-
+\noindent\hrulefill
 \begin{flushleft}
 	Sea $f_{2}(x,y) = x * y$\linebreak
 	\\Vamos a aplicar recursicion primitiva. 
 	\\Queremos que $h(x,y) = f_{2}(x,y) = x * y$
 	\\Es claro que necesitamos $n=1$
-	\\Luego $h(x,0) = x * 0 = 0 = 0 \Rightarrow f(x) = 0$
+	\\Luego $h(x,0) = x * 0 = 0 \Rightarrow f(x) = 0$
 	\\Y, $h(x,t+1) = x*(t+1) = x*t + x = h(x,t) + x = f_{1}(h(x,t),x)$
 	\\Entonces 	$f_{1}(h(x,t),x) = g(h(x,t),x,t)$
 	\\Entonces $g(x,y,z) = f_{1}(x,y)$
-	\\Luego, $g$ la podemos obtener por composicion $g(x,y,z)=f_{1}(u^{3}_{1}(x,y,z),u^{3}_{2}(x,y,z))$, con $f = s$, $g_{1} = u^{3}_{1}$ y $g_{2} = u^{3}_{2}$
+	\\Luego, $g$ la podemos obtener por composicion $g(x,y,z)=f_{1}(u^{3}_{1}(x,y,z),u^{3}_{2}(x,y,z))$, con $f = f_{1}$, $g_{1} = u^{3}_{1}$ y $g_{2} = u^{3}_{2}$
 	
 \end{flushleft}
 
+\pagebreak
+\begin{flushleft}
+	Sea $f_{3}(x,y) = x^{y}$\linebreak
+	\\Vamos a aplicar recursicion primitiva. 
+	\\Queremos que $h(x,y) = f_{3}(x,y) = x^{y}$
+	\\Es claro que necesitamos $n=1$
+	\\Luego $h(x,0) = x^{0} = 1 \Rightarrow f(x) = 1$
+	\\Y, $h(x,t+1) = x^{(t+1)} = x^{t} * x = h(x,t) * x = f_{2}(h(x,t),x)$
+	\\Entonces 	$f_{2}(h(x,t),x) = g(h(x,t),x,t)$
+	\\Entonces $g(x,y,z) = f_{2}(x,y)$
+	\\Luego, $g$ la podemos obtener por composicion $g(x,y,z)=f_{2}(u^{3}_{1}(x,y,z),u^{3}_{2}(x,y,z))$, con $f = f_{2}$, $g_{1} = u^{3}_{1}$ y $g_{2} = u^{3}_{2}$
+	
+\end{flushleft}
+
+\noindent\hrulefill
 
 
+\begin{flushleft}
+	ESTA INCOMPLETO\\
+	Sea $f_{4}(x,y) = x^{x^{x^{.^{.^{.^{x}}}}}}$ $x$ elevado a $x$, $y$ veces\linebreak
+	\\Vamos a aplicar recursicion primitiva. 
+	\\Queremos que $h(x,y) = f_{4}(x,y) $
+	\\Es claro que necesitamos $n=1$
+	\\Luego $h(x,0) = 1 \Rightarrow f(x) = 1$ Por Obs de la GUIA
+	\\Y, $h(x,t+1) = x^{x^{x^{.^{.^{.^{x}}}}}} = (x^{x})^{x^{x^{.^{.^{.^{x}}}}}} = h(x,t) * x = f_{2}(h(x,t),x)$
+	\\Entonces 	$f_{2}(h(x,t),x) = g(h(x,t),x,t)$
+	\\Entonces $g(x,y,z) = f_{2}(x,y)$
+	\\Luego, $g$ la podemos obtener por composicion $g(x,y,z)=f_{2}(u^{3}_{1}(x,y,z),u^{3}_{2}(x,y,z))$, con $f = f_{2}$, $g_{1} = u^{3}_{1}$ y $g_{2} = u^{3}_{2}$
+	
+\end{flushleft}
+\noindent\hrulefill
 
+\begin{flushleft}
+	Sea $g_{3}(x,y) = max\lbrace x,y \rbrace$\linebreak
+	\\Vamos a aplicar recursicion primitiva. 
+	\\Queremos que $h(x,y) = g_{3}(x,y)$
+	\\Es claro que necesitamos $n=1$
+	\\Luego $h(x,0) = max \lbrace x, 0 \rbrace = x \Rightarrow f(x) = id(x)$
+	\\Y, $h(x,t+1) = max \lbrace {x, t+1} \rbrace = max \lbrace g_{1}(x), t \rbrace + 1 = s(h(g_{1}(x),t))$
+	\\Entonces 	$s(h(g_{1}(x),t)) = g(h(x,t),x,t)$
+	\\Entonces $g(x,y,z) = f_{2}(x,y)$
+	\\Luego, $g$ la podemos obtener por composicion $g(x,y,z)=f_{2}(u^{3}_{1}(x,y,z),u^{3}_{2}(x,y,z))$, con $f = f_{2}$, $g_{1} = u^{3}_{1}$ y $g_{2} = u^{3}_{2}$
+	
+\end{flushleft}
 
 
 \end{document}
