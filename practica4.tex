@@ -1,0 +1,467 @@
+\documentclass[14pt,a4paper,fleqn]{article}
+%\usepackage[T1]{fontenc}
+%\usepackage[math]{anttor}
+%\usepackage{libris}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[framed,hyperref]{ntheorem}
+\usepackage[colorlinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{colortbl}
+\pgfplotsset{compat=1.16}
+\usepackage{parskip}
+\pagestyle{fancy}
+\usepackage[a4paper,left=1cm,right=1cm,top=2cm,bottom=2cm]{geometry}
+\date{}
+\author{Ivan Vercinsky}
+\title{Practica 4}
+\newcommand{\implica}[2]{(#1 \rightarrow #2)}
+\newcommand{\entonces}{\rightarrow}
+\newcommand{\no}[1]{\neg #1}
+\newcommand{\satisface}{\vDash}
+\newcommand{\conSeman}{\vDash}
+\newcommand{\noConSeman}{\nvDash}
+\newcommand{\nosatisf}{\nvDash}
+\newcommand{\y}{\wedge}
+\renewcommand{\o}{\vee}
+\newcommand{\sii}{\leftrightarrow}
+\newcommand{\conj}[2]{(#1 \wedge #2)}
+\newcommand{\disj}[2]{(#1 \vee #2)}
+\newcommand{\tq}{\ensuremath{\: / \:}}
+\newcommand{\val}{\ensuremath{v \in VAL }}
+\newcommand{\prop}{\ensuremath{\in PROP}}
+\newcommand{\paraTodo}{\ensuremath{\: \forall}}
+\newcommand{\vacio}{\emptyset}
+\setlist{nolistsep}
+\begin{document}
+\maketitle
+
+\section*{Ejemplos de Formulas}
+
+\begin{description}[font=\bfseries]
+\item[$(\neg p)$] No es una formula porque no es de la 2da de la definición.
+\item[$p \entonces q $] No es formula, porque le faltan los parentesis
+\item[$ \neg ( \neg p ) $] No es formula, porque $(\neg p)$ no lo era.
+\item[$\implica{p}{\no{q}}$] Es formula, ya que $\neg q$ es el caso 2. $p, q$ son formulas y luego la expresión es del caso 3
+\end{description}
+
+\paragraph*{Notación}
+\begin{align*}
+	\conj{p}{q} &:= \no{\implica{p}{\no{q}}} \textnormal{, con p y q formulas} \\
+	\disj{p}{q} &:= \implica{\no{p}}{q}
+\end{align*}
+
+\section*{Ejercicio 1}
+Demostrar que si $a \in FORM$, entonces tiene la misma cantidad de parentesis que abren y que cierran.
+\begin{itemize}
+	\item $l(a) := \#$ de parentesis izquierdos
+	\item $r(a) := \#$ de parentesis derechos	
+\end{itemize}
+Demos: por Inducción Estructural.
+\begin{itemize}
+	\item Caso Base
+		\begin{itemize}
+			\item $a \in PROP$. Entonces vale porque $ l(a) == r(a) == 0$
+		\end{itemize}
+	\item Casos Recursivos
+		\begin{itemize}
+			\item $a = \no{b}$. Entonces 
+			\begin{itemize}
+				\item vale porque $ l(a) == l(b) == r(b) == r(a)$
+				\item $l(a) == l(b)$ porque la negación no agrega parentesis
+				\item $r(a) == r(b)$ porque la negación no agrega parentesis
+				\item $r(b) == l(b)$ por Hipotesis Inductiva
+			\end{itemize}
+			\item $a = \implica{b}{c}$. Entonces
+			\begin{itemize}
+				\item vale porque $ l(a) == l(b) + l(c) + 1 == r(b) + r(c) + 1 == r(a)$
+				\item $l(a) == l(b) + l(c) + 1$ porque la implicación agrega un parentesis a la izquierda
+				\item $r(a) == r(b) + r(c) + 1$ porque la implicación agrega un parentesis a la derecha
+				\item Y, además
+				\item $l(b) + l(c) + 1 == r(b) + r(c) + 1$
+				\item $l(b) + l(c) == r(b) + r(c)$ por Hipotesis Inductiva
+			\end{itemize}
+		\end{itemize}
+\end{itemize}
+
+\section*{Semántica}
+Valuación:
+\begin{equation*}
+	v:PROP \entonces {0,1}
+\end{equation*}
+Notación:
+\begin{align*}
+	v \models q &\sii v(q)=1 & q \in PROP \\
+	v \nvDash q &\sii v(q)=0 & q \in PROP
+\end{align*}
+Def: \textit{Valor de Verdad de una formula $\mathbf{a}$ bajo una valuación $\mathbf{v}$}
+\begin{align*}
+	\mathbf{a} &= PROP \entonces v \satisface \mathbf{a} \sii v(\mathbf{a})=1 \\
+	\mathbf{a} &= \no \mathbf{b} \entonces v \satisface \mathbf{a} \sii v \nosatisf \mathbf{b} \\
+	\mathbf{a} &= (\mathbf{b} \entonces \mathbf{c}) \entonces v \satisface \mathbf{a} \sii v \nosatisf \mathbf{b} \: o \: v \satisface \mathbf{c}
+\end{align*}
+
+Def: \textit{La formula de $\mathbf{a}$ es una tautologia $\sii v \satisface \mathbf{a}\; \forall v:VAL$} \\
+Def: \textit{La formula de $\mathbf{a}$ es una contradicción $\sii v \nosatisf \mathbf{a}\; \forall v:VAL$} \\
+Def: \textit{La formula de $\mathbf{a}$ es una contingencia $\sii \exists v_{1}, v_{2}\: : \: v_{1} \satisface \mathbf{a} \: y\: v_{2} \nosatisf \mathbf{a}$} \\
+
+\section*{Ejercicio 2}
+\noindent Decidir si las siguientes formulas son tautologias, contradicciones, o contingencias
+
+\begin{enumerate}
+	\item $a=\implica p q $
+	\begin{itemize}
+		\item Como $a=(p \entonces q) $ entonces $v \satisface a \sii v \nosatisf p \vee v \satisface q$
+		\item Quiero ver si existen $v_{1}$, $v_{2}$ tal que $v_{1} \satisface a$ y $v_{2} \nosatisf a$. Luego $a$ es contingencia
+		\item Sea $v_{1} \in VAL$ tal que $v_{1}(p) = 0$ 
+		\item entonces $v_{1} \nosatisf p \entonces v_{1} \satisface a $ por definición de $a=(p \entonces q)$
+		\item Sea $v_{2} \in VAL$ tal que $v_{2}(p) = 0 \wedge v_{2}(q)=1$ 
+		\item entonces $v_{2} \nosatisf p \wedge v_{2} \satisface q \entonces v_{2} \nosatisf a $ por definición de $a=(p \entonces q)$
+		\item Probamos que a es contingencia
+	\end{itemize}
+	\item $a=\no{\implica{p}{q}}$	
+	\begin{itemize}
+		\item Misma idea que el item anterior. Pero invirtiendo las valuaciones
+	\end{itemize}
+	\item $a=\implica{\implica{\conj{p}{q}}{r}}{\implica{p}{r}}$
+	\begin{itemize}
+		\item Quiero ver si existen $v_{1}$, $v_{2}$ tal que $v_{1} \satisface a$ y $v_{2} \nosatisf a$. Luego $a$ es contingencia
+		\item Sea $b = \implica{\conj{p}{q}}{r}$
+		\item Sea $c = \implica{p}{r}$	
+		\item Luego, queda que $a = \implica b c$
+		\vspace{5pt}		
+		\item Hay que buscar $v_{1}$ tal que $v_{1} \nosatisf b $ Entonces $v_{1} \satisface a$
+		\begin{itemize}
+			\item Sea $v_{1}:VAL$ tal que  $v_{1}(p) = 1 \wedge v_{1}(q) = 1 \wedge v_{1}(r) = 0$
+			\item entonces $v_{1} \satisface \conj p q \wedge v_{1} \nosatisf r \entonces v_{1} \nosatisf b$ 
+		\end{itemize}
+		\item Por lo anterior encontramos que $v_{1} \satisface a$
+		\vspace{5pt}
+		\item Ahora, hay que buscar $v_{2}$ tal que $v_{2} \satisface b \wedge v_{2} \nosatisf c$ Entonces $v_{2} \nosatisf a$
+		\begin{itemize}
+			\item Sea $v_{2}:VAL$ tal que  $v_{2}(p) = 1 \wedge v_{1}(q) = 0 \wedge v_{1}(r) = 0$
+			\item entonces $v_{2} \nosatisf \conj p q \entonces v_{2} \satisface b$ porque al no valer el antecedente vale la implicación
+			\item además $v_{2} \satisface p \wedge v_{2} \nosatisf r$ entonces $v_{2} \nosatisf \implica p r $ entonces $v_{2} \nosatisf c$
+		\end{itemize}
+		\item Por lo anterior encontramos que $v_{2} \nosatisf a$
+		\vspace{5pt}		
+		\item Probamos que $a$ es contingencia
+	\end{itemize}
+	\item $a=\implica{\implica{\implica{p}{q}}{p}}{p}$
+	\begin{itemize}
+		\item $v_{1} \satisface p $ entonces satisface al ultimo consecuente luego satisface a toda implicación.
+		\item No parece haber $v_{2}$ tal que $v_{2} \nosatisf a$. 
+		\item Probemos que $v \satisface a \: \forall \: v: VAL \entonces a $ es tautologia
+		\vspace{5pt}
+		\begin{itemize}
+			\item Supongamos que $\exists v_{2}:VAL$ tal que $v_{2} \nosatisf a$
+			\item Entonces $v_{2} \satisface \implica{\implica p q}{p}$ y $v_{2} \nosatisf p$
+			\item Entonces $(v_{2} \nosatisf \implica p q $ o $v_{2} \satisface p )$ y $v_{2} \nosatisf p$
+			\item Entonces $v_{2} \satisface p $ y $v_{2} \nosatisf q$ y $v_{2} \nosatisf p$ ABS!
+			\item Luego, probamos que $\nexists v_{2} :VAL $ tal que $v_{2} \nosatisf a$
+			\item Luego $a$ es tautologia
+		\end{itemize}
+	\end{itemize}
+	\item $a=(((p \entonces q) \wedge (r \entonces q) \entonces ((p \vee r) \entonces q)) $
+	\begin{itemize}
+		\item Es tautologia
+		\item Queda de tarea escribirlo bien
+	\end{itemize}
+\end{enumerate}
+\newpage
+\section*{Ejercicio 3}
+
+$\beta \in FORM$ contradicción y $\alpha \in FORM$. Defino $\alpha_{\beta}$ como la formula que se obtiene al reemplazar todas las variables proposiciones de $\alpha$ por la formula $\beta$.
+
+Probar que $\alpha_{\beta}$ es una contradiccón o una tautologia.
+
+Demostración por Inducción Estructural en $\alpha$ 
+
+\begin{itemize}
+	\item Caso Base
+	\begin{itemize}
+		\item $\alpha \in PROP$ entonces $\alpha_{\beta} := \beta$ entonces es una contradicción por definición de $\beta$
+	\end{itemize}
+	\item Paso Inductivo
+	\begin{itemize}
+		\item $\alpha = \no{\phi}$ 
+		\begin{itemize}
+			\item entonces $\alpha_{\beta} := \no{\phi_{\beta}}$ 
+			\item Luego por Hipotesis Inductiva $\phi_{\beta}$ es tautologia o contradicción. 
+			\item Luego $\no{\phi_{\beta}}$ es contradicción o tautologia
+		\end{itemize}
+		\item $\alpha = \implica \phi \psi$
+		\begin{itemize}
+			\item entonces $\alpha_{\beta} := \implica{\phi_{\beta}}{\psi_{\beta}}$ 
+			\item Luego por Hipotesis Inductiva $\phi_{\beta}$ es tautologia o contradicción y $\psi_{\beta}$ es tautologia o contradicción. 
+			\item Si :
+			\begin{itemize}
+				 \item entonces $v \nosatisf \phi_{\beta}$ $\forall v: VAL \entonces v \satisface \alpha_{\beta}$ $\forall v:VAL$ $ \entonces  \alpha_{\beta}$ es tautologia 
+			\end{itemize}
+			\item Si $\psi_{\beta}$ es tautologia:
+			\begin{itemize}
+				 \item entonces $v \satisface \psi_{\beta}$ $\forall v: VAL \entonces v \satisface \alpha_{\beta}$ $\forall v:VAL$ $ \entonces  \alpha_{\beta}$ es tautologia 
+			\end{itemize}
+			\item Si $\phi_{\beta}$ es tautologia y $\psi_{\beta}$ es contradiccion:
+			\begin{itemize}
+				 \item entonces $v \satisface \phi_{\beta}$ $\forall v: VAL $
+				 \item entonces $v \nosatisf \psi_{\beta}$ $\forall v: VAL $				 
+ 				 \item entonces $v \satisface \phi_{\beta} \wedge v \nosatisf \psi_{\beta}$ $\forall v: VAL $
+				 \item entonces $v \nosatisf \alpha_{\beta}$ $\forall v:VAL$ $ \entonces \alpha_{\beta}$ es contradicción
+			\end{itemize}			
+		\end{itemize}
+	\end{itemize}
+\end{itemize}
+
+\section*{Conectivos Adecuados}
+Función Boolean: \textit{Formalizar una tabla de verdad}
+\begin{equation*}
+	f:\{0,1\}^N \entonces \{0,1\} \text{ con } n \in N_{\geqslant 1}
+\end{equation*}
+Sea la siguiente tabla:\\
+\begin{center}
+\begin{tabular}{c|c|c}
+
+$p$ &$q$ & $\conj p q$ \\
+\hline
+0 & 0 & 0 \\
+0 & 1 & 0 \\
+1 & 0 & 0 \\
+1 & 1 & 1 \\
+
+\end{tabular}
+\end{center}
+Y, sea $f$ una func Booleana tal que:
+\begin{align*}
+	f(0,0) &= 0 \\
+	f(0,1) &= 0 \\
+	f(1,0) &= 0 \\
+	f(1,1) &= 1 \\		
+\end{align*}
+Dada $f$, \emph{¿Existe $a \in FORM$ tal que la tabla de verdad de $a$ coincide con $f$?}
+Para el caso de arriba, SI. $a=\conj p q$
+
+\textbf{Def:} \emph{Un Conjunto $C$ de Conectivos se dice adecuado si $\forall \: f \in funcBooleana$, existe $a \in FORM_{C}$(una formula que solo usa conectivos del conjunto $C$) cuya tabla de verdad coincide con $f$}
+\newpage
+\subsubsection*{Proposición}
+Sea $C = \{ \wedge, \vee, \neg \} $ es adecuado\\
+Idea: Para pensar la demostración, hay que probarlo para cualquier f. En ese caso f, puede ser cte $0$ ( contradicción) en ese caso cualquier $\alpha$ que sea contradicción sirve. O, f puede ser cte $1$ entonces cualquier $\alpha$ que sea tautologia sirve. Y, el caso no trivial, es cuando f es tiene valores para el cual da $1$ y para otros da $0$. Entonces, veamos un ejemplo. Buscar una $\alpha \in FORM_{C}$ para esta f
+\begin{center}
+\begin{tabular}{c|c|c|c}
+$p$ & $q$ & $r$ & $f$ \\
+\hline
+1 & 1 & 1 & 0 \\
+1 & 1 & 0 & 0 \\
+\rowcolor{green} 1 & 0 & 1 & 1 \\
+1 & 0 & 0 & 0 \\
+\rowcolor{green} 0 & 1 & 1 & 1 \\
+\rowcolor{green} 0 & 1 & 0 & 1 \\
+0 & 0 & 1 & 0 \\
+0 & 0 & 0 & 0 \\
+\end{tabular}
+\end{center}
+Mirar las filas donde $f(i) = 1$. Y, las unis con $\vee$. \\
+Luego $\alpha = (p \wedge \neg q \wedge r) \vee (\neg p \wedge q \wedge r) \vee (\neg p \wedge q \wedge \neg r)$
+
+Finalmente, la siguiente demostración concluye que $C$ es adecuado.\\
+Sea una función boolean cualquiera, $f: \{0,1\}^n \entonces \{0,1\}$. Buscamos una fórmula $\alpha$ que se escriba usando los conectivos de $C$, cuya tabla de verdad se corresponda con la tabla de $f$. Si $f$ es la función constantemente igual a 0, definimos la fórmula $\alpha= ( p_{0} \wedge \neg p_{0} )$. Si no, llamemos
+\begin{equation*}
+	E = \{ \overline{d} \in \{0,1\}^n \: / \: f(\overline{d}) = 1 \}
+\end{equation*}
+al conjunto de las tuplas $ \overline{d} = (d_{1}, \dotsc, d_{n})$ sobre las culas $f$ vale uno. Dado $s \in {0,1}$, defino 
+\[
+	p_{i}^{s}	= 
+	\left \{
+	\begin{array}{rl}
+		p_{i} & \text{ si } s=1 \\
+		\neg p_{i} & \text{ si } s=0 \\		
+	\end{array}
+	\right.
+\]
+y, dada $\overline{d} \in E$, defino
+\begin{equation*}
+	\alpha_{\overline{d}} = \bigwedge_{i=1}^{n} p_{i}^{d_{i}}
+\end{equation*}
+Finalmente, la fórmula
+\begin{equation*}
+	\alpha = \bigvee_{\overline{d} \in E} \alpha_{\overline{d}}
+\end{equation*}
+es lo que buscamos.
+
+\subsubsection*{Equivalencia}
+Def: \emph{Sean $\alpha$, $\beta \in FORM$ $\alpha \equiv \beta \sii (v \satisface \alpha \sii v \satisface \beta ,\: \forall v: VAL)$}
+\section*{Ejercicio 4}
+Decidir si los siguientes conjuntos de conectivos son adecuados o no.
+\begin{enumerate}
+	\item $\{ \wedge, \vee, \entonces, \neg  \}$
+	\begin{itemize}
+		\item Si, pues $\{ \wedge, \vee, \entonces, \neg \} \subseteq C$ que ya probamos es adecuado
+	\end{itemize}
+	\item $\{ \entonces, \neg \}$
+	\begin{itemize}
+		\item Veamos que con los conectivos de este conjunto podemos armar los conectivos de $C$ y entonces concluir que este conj es adecuado también.
+		\item Este conj tiene la $\neg$ pero le faltan $\wedge$ y $\vee$. Veamos que estos se pueden construir a partir de los conectivos de este conj.
+		\item $\conj \alpha \beta \equiv \neg(\alpha \entonces \neg \beta)$ que es una $FORM_{C}$
+		\item $\disj \alpha \beta \equiv (\neg\alpha \entonces \beta)$ que es una $FORM_{C}$
+		\item Luego como $C$ es adecuado $\entonces$ $\{ \entonces, \neg \}$ también
+	\end{itemize}	
+	\item $\{ \wedge, \neg \}$
+	\begin{itemize}
+		\item Misma idea, a este conj, le falta el $\vee$. Veamos que se puede construir a partir de $\wedge$ y $\neg$
+		\item $\disj \alpha \beta \equiv \neg(\neg \alpha \wedge \neg \beta)$
+		\item Luego $\{ \wedge, \neg \}$ es adecuado
+	\end{itemize}
+	\item $\{ \wedge, \entonces \}$
+	\begin{itemize}
+		\item Este conj no es adecuado. Probemoslo.
+		\item Primero, veamos que una valuacion cualquiera que satisface a cualquier proposición, también, satisface a todas las formulas de este conj.
+		\item Sea $v \in VAL \: / \: v(q) = 1$ $\forall q \in PROP \entonces v \satisface \alpha$ $\forall \alpha\in FORM_{\{\wedge, \entonces \}}$
+		\item Probemos esto por Inducción Estructural
+		\begin{itemize}
+			\item Caso Base
+			\begin{itemize}
+				\item $\alpha \in PROP \entonces v(\alpha) = 1 \entonces v \satisface \alpha$			
+			\end{itemize}
+			\item Pasos Inductivos
+			\begin{itemize}
+				\item $\alpha$ es $\conj \beta \varphi \entonces $ por HI $v \satisface \beta $ y $ v \satisface \varphi \entonces v \satisface \conj \beta \varphi$
+				\item $\alpha$ es $\implica \beta \varphi \entonces$ por HI $v \satisface \beta $ y $v \satisface \varphi \entonces v \satisface \implica \beta \varphi$
+			\end{itemize}
+		\end{itemize}
+		\item Ahora, \emph{supongamos} que $\exists \alpha \in FORM_{\{\wedge, \entonces\}}$ talque $ \alpha \equiv \neg p$
+		\item Sea $v \in VAL \: / \: v(\varphi) = 1$ $\forall \varphi \in PROP$
+		\item Entonces, por lo anterior $v \satisface \alpha$ porque $\alpha \in FORM_{\{\wedge, \entonces\}}$
+		\item Pero, entonces como $ v \satisface \alpha \entonces v \satisface \neg p \entonces v(p) = 0$ Abs!
+		\item Es Absurdo suponer que $\neg p \in FORM_{\{\wedge, \entonces\}}$
+		\item Entonces la funcion booleana que corresponde a $\neg p$ no se puede obtener a partir de $FORM_{\{\wedge, \entonces\}}$ 
+		\item Entonces $FORM_{\{\wedge, \entonces\}}$ no es adecuado. Como queriamos probar
+	\end{itemize}
+\end{enumerate}
+
+\section*{Consecuencia Semántica}
+Def: \emph{Sean $\Gamma \subseteq FORM $ y $v \in VAL$ decimos que $v \satisface \Gamma$ si $v \satisface \alpha$ $\forall \alpha \in \Gamma $} \\
+Def: \emph{Si $\exists$ $v \in VAL$ talque $v \satisface \Gamma$ entonces se dice que $\Gamma$ es satisfacible}
+
+\textbf{Def: Consecuencia Semántica} \\
+Hasta ahora veniamos usando $\satisface$ para decir que una valuación hace verdadera una formula. Ahora, vamos a reutilizar este simbolo para introducir el concepto de \emph{hipotesis}.\\
+Si $\Gamma$ es un conj de fórmulas, decimos que las hipotesis de $\Gamma$ implican semánticamente a $\alpha$ ( y lo notamos como $\Gamma \conSeman \alpha$ ) si toda valuación $v$ que satisface las hipotesis de $\Gamma$ también satisface a la conclusión $\alpha$. \\
+En otras palabras: decimos que $\Gamma \conSeman \alpha$ si vale que todas las valuaciones que satisfacen a $\Gamma$ también satisfacen a $\alpha$.\\
+Más formalmente, \emph{$\Gamma \conSeman \alpha$ si $\forall v \in VAL$ $(v \satisface \Gamma \entonces v \satisface \alpha)$}
+
+Def: $Con(\Gamma) = \{ \alpha \in FORM \: / \: \Gamma \conSeman \alpha \}$ y se llama Conjunto de Consecuencias 
+
+\section*{Ejercicio 5}
+Sean $\Gamma_{1}$ y $\Gamma_{2}$ satisfacibles. Decidir si los siguientes conjuntos son satisfacibles.
+\begin{enumerate}
+	\item $\emptyset$
+	\begin{itemize}
+		\item Es trivialmente cierto. Porque no hay ninguna formula en el vacio. Entonces cualquier valuación lo satisface
+		\item $v \satisface \alpha \: \forall \alpha \in \emptyset \entonces v \satisface \emptyset $
+	\end{itemize}
+	\item $\{p_{9}\}$
+	\begin{itemize}
+		\item Si, tomo cualquier $v \in VAL$ talque $v(p_{9})=1 \entonces v \satisface p_{9} \entonces v \satisface \{p_{9}\}$
+	\end{itemize}
+	\item $FORM$
+	\begin{itemize}
+		\item IDEA: Las contradicciónes son parte de este conjunto y no existen valuaciones que las satisfagan. Por definición.
+		\item No, como $(p \wedge \neg p) \in FORM$ y $\nexists v \in VAL $ talque $v(p \wedge \neg p) = 1$ entonces $FORM$ no es satisfacible
+	\end{itemize}
+	\item $\Gamma_{1} \bigcup \Gamma_{2}$
+	\begin{itemize}
+		\item No, porque si $\Gamma_{1} = \{p\}$ y $\Gamma_{2} = \{\neg p \}$ que son satisfacibles, luego, no puede pasar que $\exists v \in VAL$ talque $v \satisface p$ y $v \satisface \neg p$ entonces $v \nosatisf \Gamma_{1} \bigcup \Gamma_{2}$
+	\end{itemize}
+	\item $\Gamma_{1} \bigcap \Gamma_{2}$
+	\begin{itemize}
+		\item Si, porque $\Gamma_{1} \bigcap \Gamma_{2} \subseteq \Gamma_{1}$
+		\item Entonces si $\exists v \in VAL$ talque $v \satisface \Gamma_{1} \entonces v \satisface \Gamma_{1} \bigcap \Gamma_{2}$
+	\end{itemize}
+\end{enumerate}
+
+\newpage
+\section*{Ejercicio 6}
+Decidir si las siguientes afirmaciones son verdaderas o falsas\\
+\begin{enumerate}
+	\item $\{p_{1}\} \conSeman p_{2}$
+	\begin{itemize}
+		\item Falso
+		\item Tomo $v \in VAL \: / \: v(p_{1}) = 1 $ y $v(p_{2}) = 0$ y el resto cualquier cosa
+		\item Entonces $v \satisface \{p_{1}\} $ porque $v \satisface p_{1}$
+		\item Pero $v \nosatisf p_{2}$
+		\item Entonces $\{p_{1}\} \noConSeman p_{2}$ 
+	\end{itemize}
+	\item $ \emptyset \conSeman (p_{3} \y p_{7}) $
+	\begin{itemize}
+		\item Falso
+		\item Tomo $\val \tq v(\varphi) = 0 \paraTodo \varphi \prop $
+		\item $v \satisface \emptyset $ trivialmente
+		\item Pero $v \nosatisf ( p_{3} \y p_{7})$
+		\item Entonces $\emptyset \noConSeman (p_{3} \y p_7)$
+	\end{itemize}
+	\item $ \emptyset \conSeman (p_{5} \o \neg p_{5})$
+	\begin{itemize}
+		\item Verdadero
+		\item Como $(p_5 \o \neg p_5)$ es una tautologia. Entonces $ v \satisface (p_5 \o \neg p_5) \paraTodo \val$
+		\item Dada $\val \tq v \satisface \emptyset  \entonces v \satisface ( p_5 \o \neg p_5 )$
+		\item Luego $ \emptyset \conSeman (p_{5} \o \neg p_{5}) $
+	\end{itemize}
+	\item $ Con(\emptyset) = TAUT = \{ \alpha \in FORM \: / \: \alpha \: es \: tautologia \}$
+	\begin{itemize}
+		\item Verdadero
+		\item $\alpha \in Con(\emptyset) $
+		\item $\sii \paraTodo \val \: (v \satisface \vacio \entonces v \satisface \alpha)$
+		\item $\sii \paraTodo \val \: v \satisface \alpha$
+		\item $\sii \alpha $ es tautologia
+	\end{itemize}
+	\item $ FORM \conSeman (p_{1} \y \neg p_{1})$
+	\begin{itemize}
+		\item Verdadero
+		\item $Con(FORM) = \vacio $ porque no hay una valuacion que satisfaga todas las formulas!
+		\item Luego es trivialmente verdadero
+		\item $v \satisface FORM \entonces v \satisface (p_1 \y \neg p_1) $ es Verdadero, (Antecedente Falso) $\paraTodo \val$
+	\end{itemize}
+	\item Si $\Gamma$ es satisfacible $\entonces Con(\Gamma)$ es satisfacible
+	\begin{itemize}
+		\item Verdadero
+		\item Como $\Gamma$ es satisfacible $\entonces \exists \val \tq v \satisface \Gamma$. 
+		\item Veamos que $v \satisface Con(\Gamma)$
+		\item Sea $\alpha \in Con(\Gamma)$
+		\item Por def de $Con$ si $v \satisface \Gamma \entonces v \satisface \alpha$
+		\item Por lo tanto $Con(\Gamma)$	 es satisfacible.
+	\end{itemize}
+
+\end{enumerate}
+
+\end{document}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
