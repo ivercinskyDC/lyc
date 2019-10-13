@@ -1,3 +1,6 @@
 *.aux
 *.log
 *.synctex.gz
+*.out
+*.dvi
+*.thm
