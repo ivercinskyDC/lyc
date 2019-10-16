@@ -1,10 +1,7 @@
 \documentclass[14pt,a4paper,fleqn]{article}
-%\usepackage[T1]{fontenc}
-%\usepackage[math]{anttor}
-%\usepackage{libris}
+\usepackage[T1]{fontenc}
 \usepackage[utf8]{inputenc}
 \usepackage[spanish]{babel}
-
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{amssymb}
@@ -24,23 +21,7 @@
 \date{}
 \author{Ivan Vercinsky}
 \title{Practica 4}
-\newcommand{\implica}[2]{(#1 \rightarrow #2)}
-\newcommand{\entonces}{\rightarrow}
-\newcommand{\no}[1]{\neg #1}
-\newcommand{\satisface}{\vDash}
-\newcommand{\conSeman}{\vDash}
-\newcommand{\noConSeman}{\nvDash}
-\newcommand{\nosatisf}{\nvDash}
-\newcommand{\y}{\wedge}
-\renewcommand{\o}{\vee}
-\newcommand{\sii}{\leftrightarrow}
-\newcommand{\conj}[2]{(#1 \wedge #2)}
-\newcommand{\disj}[2]{(#1 \vee #2)}
-\newcommand{\tq}{\ensuremath{\: / \:}}
-\newcommand{\val}{\ensuremath{v \in VAL }}
-\newcommand{\prop}{\ensuremath{\in PROP}}
-\newcommand{\paraTodo}{\ensuremath{\: \forall}}
-\newcommand{\vacio}{\emptyset}
+\usepackage{../macros/macros}
 \setlist{nolistsep}
 \begin{document}
 \maketitle
@@ -438,9 +419,7 @@ Decidir si las siguientes afirmaciones son verdaderas o falsas\\
 		\item Por def de $Con$ si $v \satisface \Gamma \entonces v \satisface \alpha$
 		\item Por lo tanto $Con(\Gamma)$	 es satisfacible.
 	\end{itemize}
-
 \end{enumerate}
-
 \end{document}
 
 

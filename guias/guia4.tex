@@ -1,0 +1,197 @@
+\documentclass[14pt,a4paper,fleqn]{article}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage[framed,hyperref]{ntheorem}
+\usepackage[colorlinks]{hyperref}
+\usepackage{booktabs}
+\usepackage{fancyhdr}
+\usepackage{enumitem}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usepackage{pgfplots}
+\usepackage{colortbl}
+\pgfplotsset{compat=1.16}
+\usepackage{parskip}
+\pagestyle{fancy}
+\usepackage[a4paper,left=1cm,right=1cm,top=2cm,bottom=2cm]{geometry}
+\date{}
+\author{Ivan Vercinsky}
+\title{Practica 4}
+\usepackage{../macros/macros}
+\setlist{nolistsep}
+
+\begin{document}
+\maketitle
+
+\section*{Ejercicio 1}
+Nos dicen que $v \nosatisf p_1$ ni  $v \nosatisf p_2$ ni  $v \nosatisf p_3$. Nos preguntan si podemos argumentar si es posible decidir si $v \satisface \alpha$ o $v \nosatisf \alpha$
+\begin{enumerate}
+	\item $\alpha = \neg p_1$
+	\begin{itemize}
+		\item Sabemos que $v \nosatisf p_1 \entonces v \satisface \neg p_1$, por definición de la valuación, $\entonces v \satisface \alpha$
+	\end{itemize}
+	\item $\alpha = (( p_5 \o p_3) \entonces p_1)$
+	\begin{itemize}
+		\item Para que $v \satisface \alpha$ tiene que pasar que $v \satisface \neg (p_5 \o p_3)$ o $v \satisface p_1$
+		\item $v \nosatisf p_1 $ ni  $v \nosatisf p_3$ entonces para que $v \satisface \alpha$ tiene que pasar que $v \nosatisf p_5$
+		\item En cambio, si $v \satisface p_5 \entonces v \satisface (p_5 \o p_3) \entonces v \nosatisf \alpha$ 
+	\end{itemize}
+	\item $\alpha = (( p_1 \o p_2) \entonces p_3)$
+	\begin{itemize}
+		\item $v \nosatisf p_1$ ni $v \nosatisf p_2$ entonces $v \nosatisf (p_1 \o p_2) \entonces v \satisface \neg(p_1 \o p_2) \entonces v \satisface \alpha$
+	\end{itemize}
+	\item $\alpha = \neg p_4$
+	\begin{itemize}
+		\item Depende de $p_4$. No sabemos que sucede con $v(p_4)$.
+		\item Si $v \satisface p_4 \entonces v \nosatisf \alpha$
+		\item Si $v \nosatisf p_4 \entonces v \satisface \alpha$
+	\end{itemize}
+	\item $\alpha = ((p_8 \entonces p_5) \entonces (p_8 \y p_0))$
+	\begin{itemize}
+		\item El consecuente siempre es falso porque $v(p_0) = 0$ por el enunciado.
+		\item Hay que ver cuando el antecedente es verdadero o falso. Si es falso entonces $v \satisface \alpha$ y sino $v \nosatisf \alpha$
+		\item Luego si $v \satisface p_8 $ y $v \nosatisf p_5 $ entonces $v \satisface \alpha$
+		\item Para los demás casos $v \nosatisf \alpha$
+	\end{itemize}
+\end{enumerate}
+\section*{Ejercicio 2}
+\section*{Ejercicio 3}
+Sean $\alpha$, $\beta$ $\in FORM$ Probar las siguientes proposiciónes:
+\begin{enumerate}
+	\item $\alpha$ es tautología sii $\neg \alpha$ no es satisfacible
+	\begin{itemize}
+		 \item $\Rightarrow$
+		 \begin{itemize}
+		 	 \item Sabemos que $\alpha$ es tautología
+		 	 \item Entonces $v \satisface \alpha \paraTodo \val$
+		 	 \item Que es lo mismo que decir
+		 	 \item $\nexists \val \tq v \nosatisf \alpha \sii \nexists \val \tq v \satisface \neg \alpha$
+		 	 \item O sea, $\neg \alpha$ no es satisfacible
+		 \end{itemize}
+		 \item $\Leftarrow$
+		 \begin{itemize}
+		 	\item Sabemos que $\nexists \val \tq v \satisface \neg \alpha \sii \nexists \val \tq v \nosatisf \alpha$
+		 	\item Entonces $v \satisface \alpha \paraTodo \val$
+		  	\item Entonces $\alpha$ es tautología
+		 \end{itemize}
+	\end{itemize}
+	\item $(\alpha \y \beta)$ es tautología sii $\alpha$ es tautología y $\beta$ es tautología
+	\begin{itemize}
+		\item $\Rightarrow$
+		\begin{itemize}
+			\item Sabemos que $(\alpha \y \beta)$ es tautología
+			\item Entonces $v \satisface (\alpha \y \beta) \paraTodo \val$
+			\item Entonces $v \satisface \alpha \paraTodo \val$ y $v \satisface \beta \paraTodo \val$
+			\item Entonces $\alpha$ es tautología y $\beta$ esta tautología
+		\end{itemize}
+		\item $\Leftarrow$
+		\begin{itemize}
+			\item Sabemos $\alpha$ es tautología y $\beta$ esta tautología
+			\item Entonces $v \satisface \alpha \paraTodo \val$ y $v \satisface \beta \paraTodo \val$
+			\item Entonces $v \satisface (\alpha \y \beta) \paraTodo \val$			
+			\item Sabemos que $(\alpha \y \beta)$ es tautología
+		\end{itemize}
+	\end{itemize}
+	\item $(\alpha \o \beta)$ es contradicción sii $\alpha$ es contradicción y $\beta$ es contradicción
+	\begin{itemize}
+		\item $\Rightarrow$
+		\begin{itemize}
+			\item Sabemos que $(\alpha \o \beta)$ es contradicción
+			\item Entonces $v \nosatisf (\alpha \o \beta) \paraTodo \val$
+			\item Entonces $v \nosatisf \alpha \paraTodo \val$ y $v \nosatisf \beta \paraTodo \val$
+			\item Entonces $\alpha$ es contradicción y $\beta$ esta contradicción
+		\end{itemize}
+		\item $\Leftarrow$
+		\begin{itemize}
+			\item Sabemos $\alpha$ es contradicción y $\beta$ esta contradicción
+			\item Entonces $v \nosatisf \alpha \paraTodo \val$ y $v \nosatisf \beta \paraTodo \val$
+			\item Entonces $v \nosatisf (\alpha \o \beta) \paraTodo \val$
+			\item Sabemos que $(\alpha \o \beta)$ es contradicción
+		\end{itemize}
+	\end{itemize}
+	\item $(\alpha \entonces \beta)$ es contradicción sii $\alpha$ es tautología y $\beta$ es contradicción
+	\begin{itemize}
+		\item $\Rightarrow$
+		\begin{itemize}
+			\item Sabemos que $(\alpha \entonces \beta)$ es contradicción
+			\item Entonces $v \satisface \alpha \paraTodo \val$ y $v \nosatisf \beta \paraTodo \val$
+			\item Entonces $\alpha$ es tautología y $\beta$ esta contradicción
+		\end{itemize}
+		\item $\Leftarrow$
+		\begin{itemize}
+			\item Sabemos $\alpha$ es tautología y $\beta$ esta contradicción
+			\item Entonces $v \satisface \alpha \paraTodo \val$ y $v \nosatisf \beta \paraTodo \val$
+			\item Entonces $v \nosatisf (\alpha \entonces \beta) \paraTodo \val$
+			\item Sabemos que $(\alpha \entonces \beta)$ es contradicción
+		\end{itemize}
+	\end{itemize}
+\end{enumerate}
+\section*{Ejercicio 4}
+Sean $\alpha$, $\beta$ $\in FORM$ Probar las siguientes proposiciónes:
+\begin{enumerate}
+	\item Si $(\alpha \y \beta)$ es contingencia, entonces $\alpha$ es contingencia o $\beta$ es contingencia
+	\begin{itemize}
+		\item Sabemos que $(\alpha \y \beta)$ es contingencia, entonces $v_1, v_2 \in VAL \tq v_1 \satisface (\alpha \y \beta) $ y $v_2 \nosatisf (\alpha \y \beta)$
+		\item Luego $v_1 \satisface \alpha$ y $v_1 \satisface \beta$
+		\item Además con $v_2$ pueden pasar 2 cosas. O, bien, $v_2 \satisface \alpha$ y $v_2 \nosatisf \beta$ o $v_2 \nosatisf \alpha$ y $v_2 \satisface \beta$
+		\item Luego por $v_2$ se puede concluir que $\alpha$ y $\beta$ son contingencias
+	\end{itemize}
+	\item Dadas dos valuaciones $v$ y $v'$, probar que si $v(p_i) = v'(p_i) $ para toda $p_i \in Var(\alpha)$ entonces $v \satisface \alpha \sii v' \satisface \alpha$
+	\begin{itemize}
+		\item Lo probamos por inducción en $\alpha$
+		\item Caso Base
+		\begin{itemize}
+			\item $\alpha \in PROP$ entonces $Var(\alpha) = {p}$
+			\item Sabemos que $v(p)=v'(p)$ por definición. 
+			\item Luego como $\alpha = p$ 
+			\item entonces si $v \satisface \alpha \sii v(p) = 1 \sii v`(p) =1 \sii v' \satisface \alpha$
+			\item entonces si $v \nosatisf \alpha \sii v(p) = 0 \sii v`(p) = 0 \sii v' \nosatisf \alpha$
+		\end{itemize}
+		\item Pasos Inductivos
+		\begin{itemize}
+			\item $\alpha$ es $\neg \beta$
+			\begin{itemize}
+				\item Entonces $Var(\alpha) = Var(\beta)$ ya que la negación no agrega variables				
+				\item Sabemos por definicion que $v(p_i) = v'(p_i) $ para toda $p_i \in Var(\beta)$
+				\item Entonces 
+				\item $v \satisface \alpha \sii v \nosatisf \beta $ por Definición
+				\item $v \nosatisf \beta \sii v' \nosatisf \beta $ por Hipotesis Inductiva
+				\item $v' \nosatisf \beta \sii v' \satisface \alpha$ por Definición
+			\end{itemize}
+			\item $\alpha$ es $(\beta \entonces \phi)$
+			\begin{itemize}
+				\item Entonces $Var(\alpha) = Var(\beta) \bigcup Var(\phi)$ ya que la implicación agrega 2 variables
+				\item Sabemos por definición que $v(p_i) = v'(p_i) $ para toda $p_i \in Var(\beta) \bigcup Var(\phi)$
+				\item Entonces 
+				\item $v \nosatisf \alpha \sii v \satisface \beta $ y $v \nosatisf \phi$ por Definición
+				\item $v \satisface \beta \sii v' \satisface \beta $ por Hipotesis Inductiva
+				\item $v \nosatisf \phi \sii v' \nosatisf \phi $ por Hipotesis Inductiva
+				\item $v' \satisface \beta $ y $v' \nosatisf \phi \sii v' \satisface \alpha$ por Definición
+				\item Luego, es fácil ver que para el resto de los casos se comprueba la hipotesis. Hay que ir usando la definición de satisfacibilidad de la implicación e ir probando los casos para que $\beta$ y $\phi$ satisfagan $\alpha$ o no
+			\end{itemize}
+		\end{itemize}
+	\end{itemize}	
+	\newpage
+	\item \textbf{Si $Var(\alpha) \bigcap Var(\beta) = \vacio$ entonces $(\alpha \entonces \beta)$ es tautología $\sii $ $\alpha$ es contradicción o $\beta$ es tautología}
+	\begin{itemize}
+		\item Consultar
+		\item $\Rightarrow$ entiendo que sale sin usar que no comparten variables. Ya que usas la def de $v \satisface p \entonces q$
+		\item $\Leftarrow$ entiendo que hay que usar que no comparten variables para poder hablar decir que dos forms != pueden ser contradiccion o tautologia sin caer en el absurdo ya que no comparten variables
+	\end{itemize}
+	\item \textbf{$\alpha$ y $\beta$ contingencias y no comparten variables $\entonces$ $(\alpha \y \beta)$ contingencia}
+	\begin{itemize}
+		\item Como no comparten variables entonces no se puede implicar que si $v \satisface \alpha \entonces v \satisface \beta$
+		\item En particular, no puede pasar que $\alpha = \neg \beta$ porque comparten todas las variables.
+	\end{itemize}
+\end{enumerate}
+\section*{Ejercicio 5}
+\begin{enumerate}
+	\item Ya lo hicimos en la practica 4
+	\item Ya lo hicimos en la practica 4. La idea es ver como usar los conectivos que estan en el conjunto para armar el conectivo que falta para que sea como el conjunto que ya sabes que es adecuado.
+	\item 
+\end{enumerate}
+\end{document}
